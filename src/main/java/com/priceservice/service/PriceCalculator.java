@@ -10,16 +10,16 @@ public class PriceCalculator {
 
     public static double calculatePriceForProduct(String productAsJson){
         double calculatedPrice = 0;
-
         JsonNode productNode = null;
+
         try {
             productNode = objectMapper.readTree(productAsJson).get("celestialBodies");
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         if (productNode.isArray()) {
-            for (final JsonNode componentNode : productNode) {
+            for (JsonNode componentNode : productNode) {
                 calculatedPrice += componentNode.get("price").asDouble();
                 System.out.println(componentNode + "\n");
             }
