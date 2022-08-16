@@ -11,11 +11,11 @@ class Receiver {
 
     @RabbitListener(queues = PriceApplicationConfig.PRICE_SERVICE_QUEUE_NAME)
     public void receiveProductAndSendPrice(String productAsJson) {
-        double calculatedPrice = PriceCalculator.calculatePriceForProduct(productAsJson);
+        String calculatedPriceAsJson = PriceCalculator.calculatePriceForProduct(productAsJson);
 
-        System.out.println("Sent calculated price: " + calculatedPrice);
+        System.out.println("RECEIVED product: " + productAsJson);
 
-        Sender.sendCalculatedPrice(calculatedPrice);
+        Sender.sendCalculatedPrice(calculatedPriceAsJson);
     }
 
 }

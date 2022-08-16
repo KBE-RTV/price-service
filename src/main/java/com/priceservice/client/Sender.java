@@ -16,8 +16,11 @@ public class Sender {
     }
 
 
-    public static void sendCalculatedPrice(double calculatedPrice)
+    public static void sendCalculatedPrice(String calculatedPriceAsJson)
     {
-        rabbitTemplate.convertAndSend(PriceApplicationConfig.exchange.getName(), PriceApplicationConfig.PRICE_SERVICE_RESPONSE_ROUTING_KEY, calculatedPrice);
+        rabbitTemplate.convertAndSend(PriceApplicationConfig.exchange.getName(), PriceApplicationConfig.PRICE_SERVICE_RESPONSE_ROUTING_KEY, calculatedPriceAsJson);
+
+        System.out.println("SENT calculated price: " + calculatedPriceAsJson + "\n");
+
     }
 }
