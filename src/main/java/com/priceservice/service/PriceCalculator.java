@@ -26,5 +26,4 @@ public class PriceCalculator {
         }
         return calculatedPrice;
     }
-
 }
