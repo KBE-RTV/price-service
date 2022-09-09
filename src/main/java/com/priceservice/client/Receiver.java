@@ -2,20 +2,31 @@ package com.priceservice.client;
 
 import com.priceservice.config.PriceApplicationConfig;
 
+import com.priceservice.model.DTO.MessageDTO;
+import com.priceservice.model.PlanetarySystem;
 import com.priceservice.service.PriceCalculator;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 class Receiver {
 
     @RabbitListener(queues = PriceApplicationConfig.PRICE_SERVICE_QUEUE_NAME)
-    public void receiveProductAndSendPrice(String productAsJson) {
-        String calculatedPriceAsJson = PriceCalculator.calculatePriceForProduct(productAsJson);
+    public void receiveProductAndSendPrice(String callMessageAsJson) {
+        System.out.println("RECEIVED product: " + callMessageAsJson);
 
-        System.out.println("RECEIVED product: " + productAsJson);
+        MessageDTO messageDTO = PriceCalculator.parseMessageToDTO(callMessageAsJson);
 
-        Sender.sendCalculatedPrice(calculatedPriceAsJson);
+        ArrayList<PlanetarySystem> products = messageDTO.getProducts();
+
+        products = PriceCalculator.setCalculatedPricesForProducts(products);
+
+        messageDTO.setProducts(products);
+
+        String responseMessageAsString = PriceCalculator.parseMessageDTOToJson(messageDTO);
+
+        Sender.sendCalculatedPrice(responseMessageAsString);
     }
-
 }

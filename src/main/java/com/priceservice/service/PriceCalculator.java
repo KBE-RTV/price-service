@@ -3,40 +3,57 @@ package com.priceservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.priceservice.model.CelestialBody;
+import com.priceservice.model.DTO.MessageDTO;
+import com.priceservice.model.PlanetarySystem;
+
+import java.util.ArrayList;
 
 public class PriceCalculator {
 
     static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static String calculatePriceForProduct(String productAsJson){
-        double calculatedPrice = 0;
-        int id = 0;
-        JsonNode productNode = null;
+    public static MessageDTO parseMessageToDTO(String messageAsJson) {
+        MessageDTO messageDTO;
 
         try {
-            JsonNode node = objectMapper.readValue(productAsJson, JsonNode.class);
-            if(node.has("id"))
-                id = node.get("id").asInt();
+            messageDTO = objectMapper.readValue(messageAsJson, MessageDTO.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("ID: " + id);
+        return messageDTO;
+    }
+
+    public static ArrayList<PlanetarySystem> setCalculatedPricesForProducts(ArrayList<PlanetarySystem> products) {
+
+        for (PlanetarySystem product : products) {
+
+            ArrayList<CelestialBody> components = product.getCelestialBodies();
+
+            float calculatedPrice = 0;
+
+            for (CelestialBody component : components) {
+                calculatedPrice += component.getPrice();
+            }
+
+            product.setPrice(calculatedPrice);
+        }
+
+        return products;
+    }
+
+    public static String parseMessageDTOToJson(MessageDTO message) {
+        String messageAsJson;
 
         try {
-            productNode = objectMapper.readTree(productAsJson).get("celestialBodies");
+            messageAsJson = objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
-        if (productNode.isArray()) {
-            for (JsonNode componentNode : productNode) {
-                calculatedPrice += componentNode.get("price").asDouble();
-                System.out.println(componentNode + "\n");
-            }
-        }
-        return "{ " + "\"id\" : " + id +", \"price\" : " + calculatedPrice + " }";
+        return messageAsJson;
     }
+
 
 }
