@@ -1,4 +1,4 @@
-package com.priceservice.model;
+package com.kbertv.priceService.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

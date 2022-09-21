@@ -8,11 +8,11 @@
         <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>price-service</artifactId>
+    <groupId>com.kbe-rtv</groupId>
+    <artifactId>priceService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>price-service</name>
-    <description>price-service</description>
+    <name>priceService</name>
+    <description>repo for priceService</description>
     <properties>
         <java.version>17</java.version>
     </properties>

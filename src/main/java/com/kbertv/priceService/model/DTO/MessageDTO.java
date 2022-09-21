@@ -1,15 +1,13 @@
-package com.priceservice.model.DTO;
+package com.kbertv.priceService.model.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.priceservice.model.PlanetarySystem;
+import com.kbertv.priceService.model.PlanetarySystem;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
