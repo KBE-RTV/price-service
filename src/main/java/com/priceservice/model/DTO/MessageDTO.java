@@ -17,12 +17,12 @@ import java.util.UUID;
 @ToString
 public class MessageDTO implements Serializable {
 
-    private UUID callId;
-    private ArrayList<PlanetarySystem> products;
+    private UUID requestID;
+    private ArrayList<PlanetarySystem> planetarySystems;
 
-    public MessageDTO(@JsonProperty("callId") UUID callId,
-                      @JsonProperty("products") ArrayList<PlanetarySystem> products) {
-        this.callId = callId;
-        this.products = products;
+    public MessageDTO(@JsonProperty("requestID") UUID requestID,
+                      @JsonProperty("planetarySystems") ArrayList<PlanetarySystem> planetarySystems) {
+        this.requestID = requestID;
+        this.planetarySystems = planetarySystems;
     }
 }

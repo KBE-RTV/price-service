@@ -27,6 +27,11 @@ public class PriceApplicationConfig {
     }
 
     @Bean
+    Queue responseQueue() {
+        return new Queue("priceService_response_queue", false);
+    }
+
+    @Bean
     TopicExchange exchange() {
         return new TopicExchange(TOPIC_EXCHANGE_NAME);
     }
@@ -34,6 +39,11 @@ public class PriceApplicationConfig {
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(PRICE_SERVICE_CALL_ROUTING_KEY);
+    }
+
+    @Bean
+    Binding responseBinding() {
+        return BindingBuilder.bind(responseQueue()).to(exchange()).with("priceService.response");
     }
 
     @Bean
