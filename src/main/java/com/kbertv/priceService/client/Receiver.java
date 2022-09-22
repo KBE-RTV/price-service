@@ -27,11 +27,11 @@ class Receiver {
 
         MessageDTO messageDTO = priceService.parseMessageToDTO(callAsJson);
 
-        ArrayList<PlanetarySystem> products = messageDTO.getPlanetarySystems();
+        ArrayList<PlanetarySystem> planetarySystems = messageDTO.getPlanetarySystems();
 
-        products = priceService.setCalculatedPricesForProducts(products);
+        planetarySystems = priceService.setCalculatedPricesForProducts(planetarySystems);
 
-        messageDTO.setPlanetarySystems(products);
+        messageDTO.setPlanetarySystems(planetarySystems);
 
         String responseMessageAsString = PriceService.parseMessageDTOToJson(messageDTO);
 

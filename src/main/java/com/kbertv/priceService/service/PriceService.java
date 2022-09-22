@@ -28,11 +28,11 @@ public class PriceService {
         return messageDTO;
     }
 
-    public ArrayList<PlanetarySystem> setCalculatedPricesForProducts(ArrayList<PlanetarySystem> products) {
+    public ArrayList<PlanetarySystem> setCalculatedPricesForProducts(ArrayList<PlanetarySystem> planetarySystems) {
 
-        for (PlanetarySystem product : products) {
+        for (PlanetarySystem planetarySystem : planetarySystems) {
 
-            ArrayList<CelestialBody> components = product.getCelestialBodies();
+            ArrayList<CelestialBody> components = planetarySystem.getCelestialBodies();
 
             float calculatedPrice = 0;
 
@@ -40,10 +40,10 @@ public class PriceService {
                 calculatedPrice += component.getPrice();
             }
 
-            product.setPrice(calculatedPrice);
+            planetarySystem.setPrice(calculatedPrice);
         }
 
-        return products;
+        return planetarySystems;
     }
 
     public static String parseMessageDTOToJson(MessageDTO message) {
