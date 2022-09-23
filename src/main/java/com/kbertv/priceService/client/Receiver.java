@@ -22,7 +22,7 @@ class Receiver {
     PriceService priceService;
 
     @RabbitListener(queues = {"${rabbitmq.priceService.queue.call}"})
-    public void receiveProductAndSendPrice(String callAsJson) {
+    public String receiveProductAndSendPrice(String callAsJson) {
         log.info("RECEIVED product: " + callAsJson);
 
         MessageDTO messageDTO = priceService.parseMessageToDTO(callAsJson);
@@ -35,6 +35,6 @@ class Receiver {
 
         String responseMessageAsString = PriceService.parseMessageDTOToJson(messageDTO);
 
-        sender.sendCalculatedPrice(responseMessageAsString);
+        return responseMessageAsString;
     }
 }
