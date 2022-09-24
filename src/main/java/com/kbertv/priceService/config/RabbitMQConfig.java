@@ -29,6 +29,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    TopicExchange exchange() {
+        return new TopicExchange(topicExchangeName);
+    }
+
+    @Bean
     Queue queue() {
         return new Queue(priceServiceCallQueueName, false);
     }
@@ -39,13 +44,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(topicExchangeName);
-    }
-
-    @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(priceServiceCallRoutingKey);
+    Binding binding() {
+        return BindingBuilder.bind(queue()).to(exchange).with(priceServiceCallRoutingKey);
     }
 
     @Bean

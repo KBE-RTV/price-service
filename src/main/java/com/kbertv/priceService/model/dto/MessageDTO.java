@@ -1,4 +1,4 @@
-package com.kbertv.priceService.model.DTO;
+package com.kbertv.priceService.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kbertv.priceService.model.PlanetarySystem;
@@ -23,21 +23,5 @@ public class MessageDTO implements Serializable {
         this.requestID = requestID;
         this.planetarySystems = planetarySystems;
         this.priceCalculated = isPriceCalculated();
-    }
-
-    /**
-     * Helper Method to check if all prices of the request are calculated
-     *
-     * @return true if price is calculated, else false
-     */
-    public boolean isPriceCalculated() {
-        boolean flag = true;
-        for (PlanetarySystem planetarySystem : planetarySystems) {
-            if (planetarySystem.getPrice() == 0) {
-                flag = false;
-                break;
-            }
-        }
-        return flag;
     }
 }

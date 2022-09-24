@@ -1,36 +1,30 @@
 package com.kbertv.priceService.client;
 
-import com.kbertv.priceService.model.DTO.MessageDTO;
+import com.kbertv.priceService.model.dto.MessageDTO;
 import com.kbertv.priceService.model.PlanetarySystem;
 import com.kbertv.priceService.service.PriceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-@Service
+@Component
 @Slf4j
-class Receiver {
-
-    @Autowired
-    Sender sender;
+class RabbitMQClient {
 
     @Autowired
     PriceService priceService;
 
     @RabbitListener(queues = {"${rabbitmq.priceService.queue.call}"})
-    public String receiveProductAndSendPrice(String callAsJson) {
-        log.info("RECEIVED product: " + callAsJson);
+    public String receiveProductsAndSendPrice(String messageAsJson) {
+        log.info("RECEIVED product: " + messageAsJson);
 
-        MessageDTO messageDTO = priceService.parseMessageToDTO(callAsJson);
+        MessageDTO messageDTO = priceService.parseJsonToMessageDTO(messageAsJson);
 
         ArrayList<PlanetarySystem> planetarySystems = messageDTO.getPlanetarySystems();
-
-        planetarySystems = priceService.setCalculatedPricesForProducts(planetarySystems);
-
+        planetarySystems = priceService.setCalculatedPricesForPlanetarySystems(planetarySystems);
         messageDTO.setPlanetarySystems(planetarySystems);
 
         String responseMessageAsString = PriceService.parseMessageDTOToJson(messageDTO);
