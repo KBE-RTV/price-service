@@ -9,12 +9,35 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+/**
+ * class for calculating prices and parsing json
+ */
 @Service
 public class PriceService {
 
     static ObjectMapper objectMapper;
 
-    public ArrayList<PlanetarySystem> setCalculatedPricesForPlanetarySystems(ArrayList<PlanetarySystem> planetarySystems) {
+    /**
+     * calculates the prices for a list of planetary systems contained in a message dto
+     * @param messageDTO
+     * @return
+     */
+    public MessageDTO calculatePricesForMessageDTO(MessageDTO messageDTO)
+    {
+        ArrayList<PlanetarySystem> planetarySystems = messageDTO.getPlanetarySystems();
+
+        planetarySystems = setCalculatedPricesForPlanetarySystems(planetarySystems);
+        messageDTO.setPlanetarySystems(planetarySystems);
+
+        return messageDTO;
+    }
+
+    /**
+     * calculates the prices for a list of planetary systems
+     * @param planetarySystems
+     * @return list of planetary systems with calculated prices
+     */
+    private ArrayList<PlanetarySystem> setCalculatedPricesForPlanetarySystems(ArrayList<PlanetarySystem> planetarySystems) {
 
         for (PlanetarySystem planetarySystem : planetarySystems) {
 
@@ -32,6 +55,11 @@ public class PriceService {
         return planetarySystems;
     }
 
+    /**
+     * parses a json message containing a list of planetary systems to a dto
+     * @param messageAsJson
+     * @return planetarySystemsMessageDTO
+     */
     public MessageDTO parseJsonToMessageDTO(String messageAsJson) {
         MessageDTO messageDTO;
 
@@ -46,13 +74,18 @@ public class PriceService {
         return messageDTO;
     }
 
-    public static String parseMessageDTOToJson(MessageDTO message) {
+    /**
+     * parses a message dto containing planetary systems to json
+     * @param messageDTO
+     * @return message as json
+     */
+    public static String parseMessageDTOToJson(MessageDTO messageDTO) {
         String messageAsJson;
 
         objectMapper = new ObjectMapper();
 
         try {
-            messageAsJson = objectMapper.writeValueAsString(message);
+            messageAsJson = objectMapper.writeValueAsString(messageDTO);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
